@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:my_clima/utilities/fetch.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -7,8 +9,9 @@ class WeatherService {
   var weatherData;
 
   Future getCurrentWeather({required double lat, required double lon}) async {
-    weatherData = await getData(
+    var weatherResponseData = await getData(
         'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey');
+    weatherData = jsonDecode(weatherResponseData);
   }
 
   String getWeatherIcon(int condition) {

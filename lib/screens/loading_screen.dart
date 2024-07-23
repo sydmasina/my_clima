@@ -27,7 +27,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       lat: locationService.latitude,
       lon: locationService.longitude,
     );
-    print(weatherService.weatherData);
+    print(weatherService.weatherData?['weather']);
   }
 
   @override
