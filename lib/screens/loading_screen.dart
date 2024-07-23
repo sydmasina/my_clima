@@ -15,11 +15,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     super.initState();
     getLocation();
-    getWeather();
   }
 
   void getLocation() async {
     await locationService.getCurrentLocation();
+    getWeather();
   }
 
   void getWeather() async {

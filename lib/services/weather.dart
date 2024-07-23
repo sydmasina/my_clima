@@ -7,12 +7,8 @@ class WeatherService {
   var weatherData;
 
   Future getCurrentWeather({required double lat, required double lon}) async {
-    try {
-      weatherData = getData(
-          'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey');
-    } catch (e) {
-      print(e);
-    }
+    weatherData = await getData(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey');
   }
 
   String getWeatherIcon(int condition) {
