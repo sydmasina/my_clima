@@ -22,21 +22,21 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.weatherData);
+    _initWeatherData();
+  }
+
+  void _initWeatherData() {
     cityName = widget.weatherData['name'];
     description = widget.weatherData['weather'][0]['description'];
     condition = widget.weatherData['weather'][0]['id'];
-    setTempCelsius();
+    temperature = widget.weatherData['main']['temp'];
   }
 
   String getIcon() {
     return weatherService.getWeatherIcon(condition);
   }
 
-  void setTempCelsius() {
-    temperature = widget.weatherData['main']['temp'] - 273.15;
-    temperature = double.parse(temperature.toStringAsFixed(2));
-  }
+  void setTempCelsius() {}
 
   @override
   Widget build(BuildContext context) {

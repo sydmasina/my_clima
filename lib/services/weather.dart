@@ -8,7 +8,7 @@ class WeatherService {
 
   Future getCurrentWeather({required double lat, required double lon}) async {
     weatherData = await getData(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey&units=metric');
   }
 
   String getWeatherIcon(int condition) {
