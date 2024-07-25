@@ -19,7 +19,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
     getLocation();
   }
 
-  final spinkit = SpinKitSpinningLines(color: Colors.white);
+  final spinkit = SpinKitSpinningLines(
+    color: Colors.white,
+    size: 100,
+  );
 
   void getLocation() async {
     await locationService.getCurrentLocation();
