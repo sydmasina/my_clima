@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_clima/screens/location_screen.dart';
 import 'package:my_clima/services/location.dart';
 import 'package:my_clima/services/weather.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 LocationService locationService = LocationService();
 WeatherService weatherService = WeatherService();
@@ -17,6 +19,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     getLocation();
   }
 
+  final spinkit = SpinKitSpinningLines(color: Colors.white);
+
   void getLocation() async {
     await locationService.getCurrentLocation();
     getWeather();
@@ -27,11 +31,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
       lat: locationService.latitude,
       lon: locationService.longitude,
     );
-    print(weatherService.weatherData?['weather']);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => LocationScreen(weatherService.weatherData)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: spinkit,
+      ),
+    );
   }
 }
