@@ -15,7 +15,7 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   late String cityName;
-  late double temperature;
+  late int temperature;
   late String description;
   late int condition;
 
@@ -29,7 +29,8 @@ class _LocationScreenState extends State<LocationScreen> {
     cityName = widget.weatherData['name'];
     description = widget.weatherData['weather'][0]['description'];
     condition = widget.weatherData['weather'][0]['id'];
-    temperature = widget.weatherData['main']['temp'];
+    double temp = widget.weatherData['main']['temp'];
+    temperature = temp.toInt();
   }
 
   String getIcon() {
