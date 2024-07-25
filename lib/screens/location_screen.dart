@@ -1,12 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:my_clima/constants/styles.dart';
+import 'package:my_clima/services/weather.dart';
+
+WeatherService weatherService = WeatherService();
 
 class LocationScreen extends StatefulWidget {
+  final weatherData;
+
+  LocationScreen(this.weatherData);
+
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  late String cityName;
+  late double temperature;
+  late String description;
+  late int condition;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.weatherData);
+    cityName = widget.weatherData['name'];
+    description = widget.weatherData['weather'][0]['description'];
+    condition = widget.weatherData['weather'][0]['id'];
+    setTempCelsius();
+  }
+
+  String getIcon() {
+    return weatherService.getWeatherIcon(condition);
+  }
+
+  void setTempCelsius() {
+    temperature = widget.weatherData['main']['temp'] - 273.15;
+    temperature = double.parse(temperature.toStringAsFixed(2));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +76,15 @@ class _LocationScreenState extends State<LocationScreen> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(left: 15.0),
+                padding: EdgeInsets.only(left: 10.0),
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '32°',
+                      '${temperature}°',
                       style: kTempTextStyle,
                     ),
                     Text(
-                      '☀️',
+                      getIcon(),
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -62,7 +93,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's 🍦 time in San Francisco!",
+                  "It's $description ${getIcon()} in $cityName!",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
