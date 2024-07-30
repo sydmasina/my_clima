@@ -1,14 +1,21 @@
+import 'package:my_clima/services/location.dart';
 import 'package:my_clima/utilities/fetch.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 String? apiKey = dotenv.env['WEATHER_API_KEY'];
+String? openWeatherMapUrl = dotenv.env['OPEN_WEATHER_MAP_URL'];
+LocationService locationService = LocationService();
 
 class WeatherService {
   var weatherData;
 
-  Future getCurrentWeather({required double lat, required double lon}) async {
+  Future getCurrentWeather() async {
+    await locationService.getCurrentLocation();
+    double lat = locationService.latitude;
+    double lon = locationService.longitude;
+
     weatherData = await getData(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey&units=metric');
+        '$openWeatherMapUrl?lat=$lat&lon=$lon&appid=$apiKey&units=metric');
   }
 
   String getWeatherIcon(int condition) {
