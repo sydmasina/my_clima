@@ -58,8 +58,8 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextButton(
-                    onPressed: () {
-                      weatherService.getCurrentWeather();
+                    onPressed: () async {
+                      await weatherService.getCurrentWeather();
                       updateUI(weatherService.weatherData);
                     },
                     child: const Icon(
