@@ -17,27 +17,24 @@ class _LocationScreenState extends State<LocationScreen> {
   late String cityName;
   late int temperature;
   late String description;
-  late int condition;
+  late String weatherIcon;
 
   @override
   void initState() {
     super.initState();
-    _initWeatherData();
+    updateUI(widget.weatherData);
   }
 
-  void _initWeatherData() {
-    cityName = widget.weatherData['name'];
-    description = widget.weatherData['weather'][0]['description'];
-    condition = widget.weatherData['weather'][0]['id'];
-    double temp = widget.weatherData['main']['temp'];
-    temperature = temp.toInt();
+  void updateUI(dynamic weatherData) {
+    setState(() {
+      cityName = weatherData['name'];
+      int condition = weatherData['weather'][0]['id'];
+      weatherIcon = weatherService.getWeatherIcon(condition);
+      double temp = weatherData['main']['temp'];
+      temperature = temp.toInt();
+      description = weatherService.getMessage(temperature);
+    });
   }
-
-  String getIcon() {
-    return weatherService.getWeatherIcon(condition);
-  }
-
-  void setTempCelsius() {}
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +42,13 @@ class _LocationScreenState extends State<LocationScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/location_background.jpg'),
+            image: const AssetImage('images/location_background.jpg'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
                 Colors.white.withOpacity(0.8), BlendMode.dstATop),
           ),
         ),
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,15 +58,18 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextButton(
-                    onPressed: () {},
-                    child: Icon(
+                    onPressed: () {
+                      weatherService.getCurrentWeather();
+                      updateUI(weatherService.weatherData);
+                    },
+                    child: const Icon(
                       Icons.near_me,
                       size: 50.0,
                     ),
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: Icon(
+                    child: const Icon(
                       Icons.location_city,
                       size: 50.0,
                     ),
@@ -77,24 +77,24 @@ class _LocationScreenState extends State<LocationScreen> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(left: 10.0),
+                padding: const EdgeInsets.only(left: 10.0),
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '${temperature}°',
+                      '$temperature°',
                       style: kTempTextStyle,
                     ),
                     Text(
-                      getIcon(),
+                      weatherIcon,
                       style: kConditionTextStyle,
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 15.0),
+                padding: const EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's $description ${getIcon()} in $cityName!",
+                  '$description in $cityName',
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
