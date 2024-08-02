@@ -9,6 +9,11 @@ LocationService locationService = LocationService();
 class WeatherService {
   var weatherData;
 
+  Future getCityWeather(String cityName) async {
+    weatherData = await getData(
+        '$openWeatherMapUrl?q=$cityName&appid=$apiKey&units=metric');
+  }
+
   Future getCurrentWeather() async {
     await locationService.getCurrentLocation();
     double lat = locationService.latitude;
